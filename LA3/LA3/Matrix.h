@@ -26,10 +26,11 @@ template<typename T>
 class Matrix {
 public:
 	Matrix() : row(0), col(0) {
-		front = nullptr;
+		front = new Node<T>();
 	}
 
 	Matrix(T** m, int row, int col) : row(row), col(col) {
+		front = new Node<T>();
 		if (row < 0 || col < 0) {
 			throw runtime_error("Row and Column can't be negative");
 		}
@@ -74,6 +75,7 @@ public:
 		}
 
 	}
+
 	Matrix(const Matrix& obj) : col(obj.col), row(obj.row) {
 		Node<T>* tempObj = obj.front;
 		Node<T>* temp = front;
@@ -122,6 +124,7 @@ public:
 			}
 		}
 	}
+
 	Matrix& operator=(const Matrix& obj){
 		if (this != &obj) {
 			row = obj.row;
@@ -177,6 +180,7 @@ public:
 
 		return *this;
 	}
+
 	Matrix(Matrix&& obj): row(obj.row), col(obj.col) {
 		front = obj.front;
 		obj.front = nullptr;
@@ -199,15 +203,20 @@ public:
 		if (front != nullptr) {
 			Node <T>* temp = front, * nextRow = front->nextInRow;
 			for (int i = 1; i < row; i++) {
-				for (int j = 1; j < col; j++, nextRow = temp->nextInRow) {
+				/*if (temp->nextInColumn == nullptr) {
+					Node<T>* curTemp = temp;
+					temp = nextRow;
+				}
+				else {
+					nextRow = temp->nextInRow;
+				}*/
+	
+				for (int j = 1; j < col; j++, temp = temp->nextInColumn) {
 					Node<T>* nodeToDelete = temp;
 					temp = temp->nextInColumn;
 					delete nodeToDelete;
 				}
-				temp = nextRow;
 			}
-			delete nextRow;
-			delete temp;
 		}		
 	}
 
