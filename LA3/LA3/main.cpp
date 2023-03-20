@@ -68,8 +68,6 @@ int main() {
 	return 0;
 }
 
-
-
 /*	row = obj.row;
 		col = obj.col;
 		T** tempArr = new T * [row];
